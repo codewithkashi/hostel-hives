@@ -46,6 +46,30 @@ const Profile = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          "https://xxv002kb-3000.inc1.devtunnels.ms/api/user/fetchuser",
+          { id: user.id }
+        );
+        setUser(response?.data);
+        await saveData("user", response?.data);
+      } catch (error: any) {
+        setAlert({
+          open: true,
+          title: error?.response?.data?.error || error?.error || error?.message,
+          onClose: () => {
+            setAlert((prev) => ({ ...prev, open: false }));
+          },
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, [isFocused, loggedIn, isAdmin]);
 
   return (
     <SafeAreaView
