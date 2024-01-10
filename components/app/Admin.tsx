@@ -19,7 +19,7 @@ export const Admin = () => {
   const [users, setUsers] = useState<Record<string, any>[]>([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const { user } = useAuth();
+  const { user, loggedIn, isAdmin } = useAuth();
   const isFocused = useIsFocused();
   const [alert, setAlert] = useState({
     open: false,
@@ -50,7 +50,7 @@ export const Admin = () => {
     };
 
     fetchUsers();
-  }, [refresh, isFocused]);
+  }, [refresh, isFocused, user, loggedIn, isAdmin]);
 
   const changeStatus = async (status: string, id: number) => {
     try {
@@ -173,7 +173,7 @@ export const Admin = () => {
         open={alert.open}
         title={alert.title}
       />
-      <LoadingModal open={loading} onRequestClose={() => setLoading(false)} />
+      {/* <LoadingModal open={loading} onRequestClose={() => setLoading(false)} /> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: SIZES.medium, paddingTop: 10 }}>
           <View style={{ ...styles.title, marginBottom: 20 }}>

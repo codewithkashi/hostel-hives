@@ -14,7 +14,7 @@ type AuthContextType = {
   isAdmin: boolean;
   setIsAdmin: Dispatch<SetStateAction<boolean>>;
   user: Record<string, any>;
-  setUser: Dispatch<SetStateAction<boolean>>;
+  setUser: Dispatch<SetStateAction<Record<string, any>>>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(

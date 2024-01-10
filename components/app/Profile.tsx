@@ -19,8 +19,9 @@ import { AntDesign } from "@expo/vector-icons";
 import Button from "../utils/Button";
 
 const Profile = () => {
+  const { setIsAdmin, setLoggedIn, setUser, user, loggedIn, isAdmin } =
+    useAuth();
   const isFocused = useIsFocused();
-  const { user, setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({
     open: false,
@@ -30,13 +31,13 @@ const Profile = () => {
   const handleCopyToClipboard = () => {
     Clipboard.setString(user.hostel_id);
   };
-  const { setIsAdmin, setLoggedIn } = useAuth();
   const logOut = async () => {
     try {
       setLoading(true);
       await removeData("user");
       setLoggedIn(false);
       setIsAdmin(false);
+      setUser({});
     } catch (error) {
       console.log(error);
       setLoggedIn(false);
@@ -45,30 +46,7 @@ const Profile = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.post(
-          "https://hostel-hives-backend.vercel.app/api/user/fetchuser",
-          { id: user.id }
-        );
-        setUser(response?.data);
-        await saveData("user", response?.data);
-      } catch (error: any) {
-        setAlert({
-          open: true,
-          title: error?.response?.data?.error || error?.error || error?.message,
-          onClose: () => {
-            setAlert((prev) => ({ ...prev, open: false }));
-          },
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, [isFocused]);
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: COLORS.lightWhite, minHeight: "100%" }}
@@ -78,7 +56,7 @@ const Profile = () => {
         open={alert.open}
         title={alert.title}
       />
-      <LoadingModal open={loading} onRequestClose={() => setLoading(false)} />
+      {/* <LoadingModal open={loading} onRequestClose={() => setLoading(false)} /> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: SIZES.medium, paddingTop: 10 }}>
           <View style={{ ...styles.title, marginBottom: 20 }}>
@@ -104,7 +82,7 @@ const Profile = () => {
                   color: user.balance > 0 ? COLORS.blueDark : COLORS.yellowDark,
                 }}
               >
-                {user.balance != 0 && user.balance > 0 ? "+" : "-"}
+                {user.balance != 0 && user.balance > 0 ? "+" : ""}
                 {user?.balance}
               </Text>
             </View>

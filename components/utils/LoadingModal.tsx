@@ -11,7 +11,7 @@ const LoadingModal = ({
 }) => {
   return (
     <Modal
-      animationType="slide"
+      // animationType="slide"
       transparent={true}
       visible={open}
       onRequestClose={onRequestClose}

@@ -11,7 +11,7 @@ import AlertModal from "../utils/Modal";
 const Stats = () => {
   const [users, setUsers] = useState<Record<string, any>[]>([]);
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
+  const { user, loggedIn, isAdmin } = useAuth();
   const isFocused = useIsFocused();
   const [alert, setAlert] = useState({
     open: false,
@@ -41,7 +41,7 @@ const Stats = () => {
     };
 
     fetchUsers();
-  }, [isFocused]);
+  }, [isFocused, user, loggedIn, isAdmin]);
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: COLORS.lightWhite, minHeight: "100%" }}
@@ -51,7 +51,7 @@ const Stats = () => {
         open={alert.open}
         title={alert.title}
       />
-      <LoadingModal open={loading} onRequestClose={() => setLoading(false)} />
+      {/* <LoadingModal open={loading} onRequestClose={() => setLoading(false)} /> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: SIZES.medium, paddingTop: 10 }}>
           <View style={{ ...styles.title, marginBottom: 20 }}>

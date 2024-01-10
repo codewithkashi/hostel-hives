@@ -29,7 +29,7 @@ const Home = () => {
   const [transactions, setTransactions] = useState<Record<string, any>[]>([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const { user } = useAuth();
+  const { user, isAdmin, loggedIn } = useAuth();
   const isFocused = useIsFocused();
   const [alert, setAlert] = useState({
     open: false,
@@ -59,7 +59,7 @@ const Home = () => {
     };
 
     fetchUsers();
-  }, [isFocused, refresh]);
+  }, [isFocused, refresh, user, isAdmin, loggedIn]);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -83,7 +83,7 @@ const Home = () => {
     };
 
     fetchUsers();
-  }, [isFocused, refresh]);
+  }, [isFocused, refresh, user, isAdmin, loggedIn]);
 
   const [checkedUsers, setCheckedUsers] = useState([]);
   const handleAddUser = (id: number) => {
@@ -94,7 +94,10 @@ const Home = () => {
       setCheckedUsers((prev) => [...prev, id] as never);
     }
   };
-
+  useEffect(() => {
+    setTransactions([]);
+    setUsers([]);
+  }, [user, loggedIn, isAdmin]);
   const closeModal = () => {
     setOpen(false);
     setPrice("");
